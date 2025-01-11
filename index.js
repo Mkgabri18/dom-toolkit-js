@@ -1,17 +1,19 @@
 import ClassList from './src/classList.js';
 // import { onEvent } from './listenerEvent.js';
-import { selectId } from './src/selectors.js';
+/* import { selectId } from './src/selectors.js'; */
+import Selectors from './src/selectors.js';
 import { local, session } from './src/storage.js'
 
-let $button1 = selectId('addColor');
-let $button2 = selectId('toggleColor');
-let $button3 = selectId('removeColor')
-let $button4 = selectId('replacecolor')
+const { selectId } = Selectors()
+
 // onEvent($button, 'click', changecolor);
-$button1.onClick(addChangecolor);
-$button2.onClick(toggleChangecolor);
-$button3.onClick(removeChangecolor);
-$button4.onClick(replacecolor);
+selectId('addColor').onClick(addChangecolor);
+selectId('toggleColor').onClick(toggleChangecolor);
+selectId('removeColor').onClick(removeChangecolor);
+selectId('replacecolor').onClick(replacecolor);
+
+console.log("not found elem. ", selectId('addColors'))
+selectId('addColors')?.onClick(addChangecolor);
 
 function addChangecolor() {
     const $desc = selectId('description');

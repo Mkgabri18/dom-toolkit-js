@@ -97,17 +97,17 @@ export default function ClassList($elem) {
         return list.indexOf(token);
     }
 
-    var classList = {
-        add: add
-        , remove: remove
-        , contains: contains
-        , toggle: toggle
-        , replace: replace
+
+
+    return {
+        add
+        ,remove
+        ,contains
+        ,toggle
+        ,replace
         , toString: $toString
         , length: 0
-        , item: item
+        , item
     }
-
-    return classList
 }
 
