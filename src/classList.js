@@ -28,14 +28,17 @@ export default function ClassList($elem) {
         return this
     }
     function remove(token) {
-        let currentList = getTokens()
-        if(checkToken(token)) {
-            let index = indexOf(getTokens(), token)
-            if (index > -1) {
-                currentList.splice(index, 1)
-                setTokens(currentList)
+        let tokens = token.split(' ');
+        tokens.forEach(subToken => {
+            let currentList = getTokens()
+            if(checkToken(subToken)) {
+                let index = indexOf(currentList, subToken)
+                if (index > -1) {
+                    currentList.splice(index, 1)
+                    setTokens(currentList)
+                }
             }
-        }
+        });
         return this
     }
     function contains(token) {

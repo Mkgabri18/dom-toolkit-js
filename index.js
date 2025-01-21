@@ -13,40 +13,22 @@ selectId('removeColor').onClick(removeChangecolor);
 selectId('replacecolor').onClick(replacecolor);
 
 console.log("not found elem. ", selectId('addColors'))
-selectId('addColors')?.onClick(addChangecolor);
+// selectId('addColors')?.onClick(addChangecolor);
 
 function addChangecolor() {
-    const $desc = selectId('description');
-    if ($desc) {
-        ClassList($desc)
-            .add('color-red')
-            .add('font-xl')
-    }
+    selectId('description').addClass('color-red font-xl');
 }
 
 function toggleChangecolor() {
-    const $desc = selectId('description');
-    if ($desc) {
-        ClassList($desc)
-            .toggle('color-red')
-    }
+    selectId('description').toggleClass('color-red');
 }
 
 function removeChangecolor() {
-    const $desc = selectId('description');
-    if ($desc) {
-        ClassList($desc)
-            .remove('color-red')
-            .remove('font-xl')
-    }
+    selectId('description').removeClass('color-red font-xl');
 }
 
 function replacecolor() {
-    const $desc = selectId('description');
-    if ($desc) {
-        ClassList($desc)
-            .replace('color-red', 'color-blue')
-    }
+    selectId('description').replaceClass('color-red', 'color-blue');
 }
 
 // Try localStorage tility funciton

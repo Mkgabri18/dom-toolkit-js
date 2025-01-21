@@ -77,6 +77,22 @@ export default function Selectors() {
             throw new Error("Invalid selector string void " + selector);
         }
     }
+    
+    function getClass(elDOM) {
+        if(!elDOM) {
+            throw new Error('Invalid Element');
+        }
+        return new ClassList(elDOM);
+    }
+
+    function attachClassManager(elDom) {
+        const elem = new ClassList(elDom);
+        Object.getOwnPropertyNames(elem)
+        .filter(method => typeof elem[method] === 'function')
+        .forEach(method => {
+            elDom[method+'Class'] = elem[method].bind(elem);
+        });
+    };
 
     function select(selector) {
         // Validate Selector
@@ -105,6 +121,8 @@ export default function Selectors() {
             if (!elDom) {
                 throw new Error(`Element with ID "${selector}" not found.`);
             }
+            
+            attachClassManager(elDom);
             return elDom;
         } catch (error) {
             console.error(error);
@@ -120,7 +138,14 @@ export default function Selectors() {
             selector = selector.slice(1);
         }
 
-        return Array.from(parent.getElementsByClassName(selector));
+        try {
+            const elements = Array.from(parent.getElementsByClassName(selector));
+            elements.forEach(attachGetClass);
+            return elements;
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
     }
 
     function selectTag(selector) {
@@ -135,6 +160,7 @@ export default function Selectors() {
         selectAll,
         selectId,
         selectClasses,
-        selectTag
+        selectTag,
+        getClass
     }
 }
