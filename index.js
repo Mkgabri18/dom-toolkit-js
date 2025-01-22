@@ -4,7 +4,7 @@ import ClassList from './src/classList.js';
 import Selectors from './src/selectors.js';
 import { local, session } from './src/storage.js'
 
-const { selectId } = Selectors()
+const { selectId } = new Selectors()
 
 // onEvent($button, 'click', changecolor);
 selectId('addColor').onClick(addChangecolor);

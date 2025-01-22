@@ -10,60 +10,63 @@ import ClassList from './classList.js';
 * @throws {Error} If the provided selector is an empty string.
 * @returns {Element|null} The matched HTML element, or null if no match is found.
 */
-export default function Selectors() {
-    let parent = document;
-
-    function selectorValidity(selector) {
+export default class Selectors {
+    
+    static selectorValidity(selector) {
         if(typeof selector === 'string' && selector === "") {
             throw new Error("Invalid selector string void " + selector);
         }
     }
-    
-    function getClass(elDOM) {
+
+    static getClass(elDOM) {
         if(!elDOM) {
             throw new Error('Invalid Element');
         }
         return new ClassList(elDOM);
     }
 
-    function attachClassManager(elDom) {
+    static attachClassManager(elDom) {
         const elem = new ClassList(elDom);
         Object.getOwnPropertyNames(elem)
-        .filter(method => typeof elem[method] === 'function')
-        .forEach(method => {
-            elDom[method+'Class'] = elem[method].bind(elem);
-        });
+            .filter(method => typeof elem[method] === 'function')
+            .forEach(method => {
+                elDom[method+'Class'] = elem[method].bind(elem);
+            });
     };
 
-    function select(selector) {
-        // Validate Selector
-        selectorValidity(selector);
-
-        return parent.querySelector(selector);
+    constructor() {
+        Selectors.parent = document;
     }
 
-    function selectAll(selector) {
+    select(selector) {
         // Validate Selector
-        selectorValidity(selector);
+        Selectors.selectorValidity(selector);
 
-        return Array.from(parent.querySelectorAll(selector))
+        return Selectors.parent.querySelector(selector);
     }
 
-    function selectId(selector) {
+    selectAll(selector) {
         // Validate Selector
-        selectorValidity(selector);
+        Selectors.selectorValidity(selector);
+
+        return Array.from(Selectors.parent.querySelectorAll(selector))
+    }
+
+    selectId(selector) {
+        // Validate Selector
+        Selectors.selectorValidity(selector);
 
         if (selector.startsWith('#')) {
             selector = selector.slice(1);
         }
 
         try {
-            const elDom = parent.getElementById(selector);
+            const elDom = Selectors.parent.getElementById(selector);
             if (!elDom) {
                 throw new Error(`Element with ID "${selector}" not found.`);
             }
             
-            attachClassManager(elDom);
+            Selectors.attachClassManager(elDom);
             return elDom;
         } catch (error) {
             console.error(error);
@@ -71,17 +74,17 @@ export default function Selectors() {
         }
     }
 
-    function selectClasses(selector) {
+    selectClasses(selector) {
         // Validate Selector
-        selectorValidity(selector);
+        Selectors.selectorValidity(selector);
 
         if (selector.startsWith('.')) {
             selector = selector.slice(1);
         }
 
         try {
-            const elements = Array.from(parent.getElementsByClassName(selector));
-            elements.forEach(attachClassManager);
+            const elements = Array.from(Selectors.parent.getElementsByClassName(selector));
+            elements.forEach(Selectors.attachClassManager);
             return elements;
         } catch (error) {
             console.error(error);
@@ -89,19 +92,11 @@ export default function Selectors() {
         }
     }
 
-    function selectTag(selector) {
+    selectTag(selector) {
         // Validate Selector
-        selectorValidity(selector);
+        Selectors.selectorValidity(selector);
 
-        return parent.getElementsByTagName(selector);
+        return Selectors.parent.getElementsByTagName(selector);
     }
 
-    return {
-        select,
-        selectAll,
-        selectId,
-        selectClasses,
-        selectTag,
-        getClass
-    }
 }
