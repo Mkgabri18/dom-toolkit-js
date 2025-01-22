@@ -6,14 +6,13 @@
     Object.defineProperty(Element.prototype, methodName, {
         value: function(callback) {
           if (typeof callback !== 'function') {
-            throw new Error("Il parametro callback deve essere una funzione.");
-          }
+            throw new Error("The callback parameter must be a function.");   }
       
           this.addEventListener(eventName, callback);
         },
         writable: true,
         configurable: true,
-        enumerable: true // Non mostrerà 'onClick' tra le proprietà dell'elemento
+        enumerable: true // It will not show 'onClick' among the element's properties
     });
 }
 

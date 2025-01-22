@@ -1,20 +1,5 @@
 import ClassList from './classList.js';
 
-/* function selectorValidity(selector) {
-    if(typeof selector === 'string' && selector === "") {
-        throw new Error("Invalid selector string void " + selector);
-    }
-}
-
-function select (selector, parent = document) {
-    return parent.querySelector(selector);
-}
-
-function selectAll (selector, parent = document) {
-    var selection = parent.querySelectorAll(selector);
-    return  Array.prototype.slice.call(selection);
-} */
-
 /**
 * Selects a single HTML element based on the provided ID selector.
 * If the selector does not start with '#', it will be prepended automatically.
@@ -25,52 +10,8 @@ function selectAll (selector, parent = document) {
 * @throws {Error} If the provided selector is an empty string.
 * @returns {Element|null} The matched HTML element, or null if no match is found.
 */
-/* function selectId (selector, parent = document) {
-    // Validate Selector
-    selectorValidity(selector);
-
-    if(selector.startsWith('#')) {
-        selector = selector.slice(1);
-    }
-
-    return parent.getElementById(selector);
-} */
-
-/* function selectDomId(selector, parnet = document) {
-
-} */
-
-/* function selectClasses (selector, parent = document) {
-    // Validate Selector
-    selectorValidity(selector);
-
-    if(selector.startsWith('.')) {
-        selector = selector.slice(1);
-    }
-    let domElements = parent.getElementsByClassName(selector);
-    return Array.from(domElements);
-}
-
-function selectTag (selector, parent = document) {
-    // Validate Selector
-    selectorValidity(selector);
-    
-    return parent.getElementsByTagName(selector);
-}
-
-export { select, selectAll, selectId, selectClasses, selectTag } */
-
 export default function Selectors() {
     let parent = document;
-
-    /* constructor(parent = document) {
-        this.parent = parent;     
-        this.select = this.select.bind(this);
-        this.selectAll = this.selectAll.bind(this);
-        this.selectId = this.selectId.bind(this);
-        this.selectClasses = this.selectClasses.bind(this);
-        this.selectTag = this.selectTag.bind(this);
-    } */
 
     function selectorValidity(selector) {
         if(typeof selector === 'string' && selector === "") {
@@ -140,7 +81,7 @@ export default function Selectors() {
 
         try {
             const elements = Array.from(parent.getElementsByClassName(selector));
-            elements.forEach(attachGetClass);
+            elements.forEach(attachClassManager);
             return elements;
         } catch (error) {
             console.error(error);

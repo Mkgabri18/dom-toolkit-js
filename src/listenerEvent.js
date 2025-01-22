@@ -2,21 +2,21 @@
 
 function isValidElement($elem) {
     if (!($elem instanceof Element)) {
-        throw new Error("Il parametro $elem deve essere un elemento DOM.");
+        throw new Error("The parameter $elem must be a DOM element.");
     } 
     return true;
 }
 
 function isValidEvent(eventName) {
     if(typeof document.body[`on${eventName}`] === "undefined") {
-        throw new Error(`L'evento "${$event}" non è un evento DOM valido.`);
+        throw new Error(`The event "${eventName}" is not a valid DOM event.`);
     }
     return true
 }
 
 function isValidCallback($callback) {
     if (typeof $callback !== 'function') {
-        throw new Error("Il parametro $callback deve essere una funzione.");
+        throw new Error("The parameter $callback must be a function.");
     }
     return true;
 }
