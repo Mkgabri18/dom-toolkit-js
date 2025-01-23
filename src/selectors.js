@@ -1,4 +1,5 @@
 import ClassList from './classList.js';
+import ValidationString from './Validators/ValidationString.js';
 
 /**
 * Selects a single HTML element based on the provided ID selector.
@@ -10,7 +11,7 @@ import ClassList from './classList.js';
 * @throws {Error} If the provided selector is an empty string.
 * @returns {Element|null} The matched HTML element, or null if no match is found.
 */
-export default class Selectors {
+export default class Selectors extends ValidationString {
     
     static selectorValidity(selector) {
         if(typeof selector === 'string' && selector === "") {
@@ -35,26 +36,27 @@ export default class Selectors {
     };
 
     constructor() {
+        super();
         Selectors.parent = document;
     }
 
     select(selector) {
         // Validate Selector
-        Selectors.selectorValidity(selector);
+        super.selecId(selector);
 
         return Selectors.parent.querySelector(selector);
     }
 
     selectAll(selector) {
         // Validate Selector
-        Selectors.selectorValidity(selector);
+        super.selecId(selector);
 
         return Array.from(Selectors.parent.querySelectorAll(selector))
     }
 
     selectId(selector) {
         // Validate Selector
-        Selectors.selectorValidity(selector);
+        super.selecId(selector);
 
         if (selector.startsWith('#')) {
             selector = selector.slice(1);
@@ -76,7 +78,7 @@ export default class Selectors {
 
     selectClasses(selector) {
         // Validate Selector
-        Selectors.selectorValidity(selector);
+        super.selecId(selector);
 
         if (selector.startsWith('.')) {
             selector = selector.slice(1);
@@ -94,7 +96,7 @@ export default class Selectors {
 
     selectTag(selector) {
         // Validate Selector
-        Selectors.selectorValidity(selector);
+        super.selecId(selector);
 
         return Selectors.parent.getElementsByTagName(selector);
     }

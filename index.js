@@ -12,7 +12,7 @@ selectId('toggleColor').onClick(toggleChangecolor);
 selectId('removeColor').onClick(removeChangecolor);
 selectId('replacecolor').onClick(replacecolor);
 
-console.log("not found elem. ", selectId('addColors'))
+console.log("not found elem. ", selectId(''))
 // selectId('addColors')?.onClick(addChangecolor);
 
 function addChangecolor() {
