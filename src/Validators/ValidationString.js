@@ -5,7 +5,7 @@ export default class ValidationString {
         }
     }
 
-    selecId(key) {
+    sanitizeSelector(key) {
         // Controllo base per stringa non vuota
         if (typeof key !== "string" || key.trim() === "") {
             throw new Error("The key must be a non-empty string.");

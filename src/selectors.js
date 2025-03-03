@@ -42,43 +42,39 @@ export default class Selectors extends ValidationString {
 
     select(selector) {
         // Validate Selector
-        super.selecId(selector);
+        super.sanitizeSelector(selector);
 
         return Selectors.parent.querySelector(selector);
     }
 
     selectAll(selector) {
         // Validate Selector
-        super.selecId(selector);
+        super.sanitizeSelector(selector);
 
         return Array.from(Selectors.parent.querySelectorAll(selector))
     }
 
     selectId(selector) {
         // Validate Selector
-        super.selecId(selector);
+        super.sanitizeSelector(selector);
 
         if (selector.startsWith('#')) {
             selector = selector.slice(1);
         }
 
-        try {
-            const elDom = Selectors.parent.getElementById(selector);
-            if (!elDom) {
-                throw new Error(`Element with ID "${selector}" not found.`);
-            }
-            
-            Selectors.attachClassManager(elDom);
-            return elDom;
-        } catch (error) {
-            console.error(error);
+        const targetElement = Selectors.parent.getElementById(selector);
+        if (!targetElement) {
+            console.error(`Element with ID "${selector}" not found.`);
             return null;
         }
+        
+        Selectors.attachClassManager(targetElement);
+        return targetElement;
     }
 
     selectClasses(selector) {
         // Validate Selector
-        super.selecId(selector);
+        super.sanitizeSelector(selector);
 
         if (selector.startsWith('.')) {
             selector = selector.slice(1);
@@ -96,7 +92,7 @@ export default class Selectors extends ValidationString {
 
     selectTag(selector) {
         // Validate Selector
-        super.selecId(selector);
+        super.sanitizeSelector(selector);
 
         return Selectors.parent.getElementsByTagName(selector);
     }
