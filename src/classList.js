@@ -1,3 +1,5 @@
+import indexOf from "./indexOf.js";
+
 /**
  * ClassList is a utility for managing class names of an HTML element.
  *
@@ -93,14 +95,6 @@ export default function ClassList($elem) {
             return true
         }
     }
-    function indexOf(list, token) {
-        if (!Array.isArray(list)) {
-            throw new TypeError('First argument must be an array');
-        }
-        return list.indexOf(token);
-    }
-
-
 
     return {
         add

@@ -22,16 +22,20 @@ function isValidCallback($callback) {
 }
 
 
-function onEvent($elem, $event, $callback, $capture) {
+function onEvent($elem, $event, $callback, $capture = false, $once = false) {
     if(isValidElement($elem) && isValidEvent($event) && isValidCallback($callback)) {
-        $elem.addEventListener($event, $callback, $capture);
+        $elem.addEventListener($event, $callback, {capture: $capture, once: $once});
     }
 }
 
-function offEvent($elem, $event, $callback, $capture) {
+function onEventOnce($elem, $event, $callback, $capture = false) {
+    onEvent($elem, $event, $callback, $capture, true);
+}
+
+function offEvent($elem, $event, $callback, $capture = false) {
     if(isValidElement($elem) && isValidEvent($event) && isValidCallback($callback)) {
         $elem.removeEventListener($event, $callback, $capture);
     }
 }
 
-export { onEvent, offEvent }
+export { onEvent, onEventOnce, offEvent }
