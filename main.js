@@ -1,7 +1,7 @@
 import { Selectors } from './index.js';
 import { local, session } from './index.js';
 
-const { selectId } = new Selectors()
+const { selectId, inHtml } = new Selectors()
 
 // onEvent($button, 'click', changecolor);
 selectId('addColor').onClick(addChangecolor);
@@ -9,8 +9,13 @@ selectId('toggleColor').onClick(toggleChangecolor);
 selectId('removeColor').onClick(removeChangecolor);
 selectId('replacecolor').onClick(replacecolor);
 
-console.log("not found elem. ", selectId(''))
+// console.log("not found elem. ", selectId(''))
 // selectId('addColors')?.onClick(addChangecolor);
+
+selectId('insertT')
+    .inHtml('Hello World!')
+    .addClass('color-red')
+// console.log("htm", htm)
 
 function addChangecolor() {
     selectId('description').addClass('color-red font-xl');

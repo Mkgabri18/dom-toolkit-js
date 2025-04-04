@@ -1,15 +1,12 @@
-export default class ValidationString {
-    constructor() {
-        if (new.target === ValidationString) {
-            throw new Error("Cannot instantiate an abstract class directly.");
-        }
-    }
 
+const ValidationString = {
     sanitizeSelector(key) {
-        // Controllo base per stringa non vuota
+        // Basic check for a non-empty string
         if (typeof key !== "string" || key.trim() === "") {
             throw new Error("The key must be a non-empty string.");
         }
         console.log("Validation passed for key:", key);
     }
 }
+
+export default ValidationString;

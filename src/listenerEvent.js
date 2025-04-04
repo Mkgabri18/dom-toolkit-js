@@ -38,4 +38,8 @@ function offEvent($elem, $event, $callback, $capture = false) {
     }
 }
 
-export { onEvent, onEventOnce, offEvent }
+function dispatch($elem, $event) {
+    $elem.dispatchEvent(new Event($event));
+};
+
+export { onEvent, onEventOnce, offEvent, dispatch }
