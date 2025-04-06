@@ -1,20 +1,37 @@
 {
-  "name": "js-toolbox-mk",
-  "version": "1.1.0",
-  "description": "Utilities library for JS ",
-  "main": "index.js",
+  "name": "dom-toolkit-js",
+  "version": "1.0.0",
+  "description": "A comprehensive JavaScript toolkit for DOM manipulation, storage handling, and events management",
+  "main": "dist/dom-toolkit.js",
+  "module": "dist/dom-toolkit.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "test": "jest",
+    "lint": "eslint src/",
+    "docs": "jsdoc -c jsdoc.json"
   },
-  "keywords": ["javascript", "tools"],
-  "author": "mkgabri18",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Mkgabri18/js-toolbox-mk.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Mkgabri18/js-toolbox-mk/issues"
-  },
-  "homepage": "https://github.com/Mkgabri18/js-toolbox-mk#readme"
+  "keywords": [
+    "dom",
+    "toolkit",
+    "javascript",
+    "utilities",
+    "storage",
+    "events",
+    "browser"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-loader": "^9.1.3",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4",
+    "terser-webpack-plugin": "^5.3.10",
+    "jest": "^29.7.0",
+    "jsdoc": "^4.0.2",
+    "eslint": "^8.57.0"
+  }
 }
