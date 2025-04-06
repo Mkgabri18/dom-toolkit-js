@@ -20,12 +20,15 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(js|ts)$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-typescript'
+              ],
               plugins: []
             }
           }
@@ -41,7 +44,7 @@ module.exports = (env, argv) => {
               comments: false,
             },
             compress: {
-              drop_console: true,
+              drop_console: isProduction,
             },
           },
           extractComments: false,
@@ -49,7 +52,7 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      extensions: ['.js'],
+      extensions: ['.ts', '.js'],
       alias: {
         '@': path.resolve(__dirname, 'src'),
       }
