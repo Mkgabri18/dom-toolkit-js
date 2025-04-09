@@ -16,14 +16,12 @@
     });
 }
 
-methodToPrototype('click');
-methodToPrototype('dblclick');
-methodToPrototype('mousedown');
-methodToPrototype('mouseup');
-methodToPrototype('mouseenter');
-methodToPrototype('mouseleave');
-methodToPrototype('mouseout');
-methodToPrototype('mouseover');
-methodToPrototype('wheel');
-
-// export { onClick,onDblClick,onMouseDown, onMouseUp, onEnter, onLeave, onHover, onOut, onWheel}
+export function mouseEvent() {
+    const events = [
+        'click', 'dblclick', 'mousedown', 'mouseup',
+        'mouseenter', 'mouseleave', 'mouseout', 'mouseover',
+        'wheel'
+    ];
+    
+    events.forEach(event => methodToPrototype(event));
+};

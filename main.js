@@ -1,7 +1,11 @@
-import { Selectors } from './index.js';
-import { local, session } from './index.js';
+
+import { Selectors } from './src/index';
+import { local, session } from './src/index';
 
 const { selectId, inHtml } = new Selectors()
+
+import { DOMToolkit } from 'dom-toolkit-js/dist';
+console.log('Module', DOMToolkit)
 
 // onEvent($button, 'click', changecolor);
 selectId('addColor').onClick(addChangecolor);

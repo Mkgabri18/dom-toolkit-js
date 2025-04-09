@@ -5,15 +5,12 @@ module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
-    entry: './index.js',
+    entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: isProduction ? 'dom-toolkit.min.js' : 'dom-toolkit.js',
-      library: {
-        name: 'DOMToolkit',
-        type: 'umd',
-        export: 'default',
-      },
+      filename: isProduction ? 'index.min.js' : 'index.js',
+      library: 'DOMToolkit',
+      libraryTarget: 'umd',
       globalObject: 'this',
       clean: true,
     },
@@ -27,7 +24,6 @@ module.exports = (env, argv) => {
             options: {
               presets: [
                 '@babel/preset-env',
-                '@babel/preset-typescript'
               ],
               plugins: []
             }
