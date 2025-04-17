@@ -1,11 +1,7 @@
-
-import { Selectors } from './src/index';
-import { local, session } from './src/index';
+import DOMToolkit from './src/index.js';
+const { Selectors, local, session } = DOMToolkit;
 
 const { selectId, inHtml } = new Selectors()
-
-import { DOMToolkit } from 'dom-toolkit-js/dist';
-console.log('Module', DOMToolkit)
 
 // onEvent($button, 'click', changecolor);
 selectId('addColor').onClick(addChangecolor);
@@ -13,13 +9,9 @@ selectId('toggleColor').onClick(toggleChangecolor);
 selectId('removeColor').onClick(removeChangecolor);
 selectId('replacecolor').onClick(replacecolor);
 
-// console.log("not found elem. ", selectId(''))
-// selectId('addColors')?.onClick(addChangecolor);
-
 selectId('insertT')
     .inHtml('Hello World!')
     .addClass('color-red')
-// console.log("htm", htm)
 
 function addChangecolor() {
     selectId('description').addClass('color-red font-xl');

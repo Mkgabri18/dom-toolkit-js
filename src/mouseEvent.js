@@ -8,7 +8,10 @@
           if (typeof callback !== 'function') {
             throw new Error("The callback parameter must be a function.");   }
       
-          this.addEventListener(eventName, callback);
+          this.addEventListener(eventName, (event) => {
+            const targetElement = event.srcElement || event.target;
+            callback(event, targetElement)
+          });
         },
         writable: true,
         configurable: true,
