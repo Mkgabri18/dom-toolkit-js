@@ -3,11 +3,15 @@ import indexOf from "./indexOf.js";
 /**
  * ClassList is a utility for managing class names of an HTML element.
  *
- * @param {HTMLElement} $elem - The HTML element to manage class names for.
+ * @param {HTMLElement} element - The HTML element to manage class names for.
  * @returns {Object} - An object with methods for managing class names.
  */
-export default function ClassList($elem) {
-    let elem = $elem;
+export default function ClassList(element) {
+    if (!(element instanceof Element)) {
+        throw new TypeError('ClassList requires an HTML Element');
+    }
+
+    const elem = element;
 
     const exclude = ['undefined', 'null', '0', 'false']
 
@@ -17,8 +21,7 @@ export default function ClassList($elem) {
      * @return {void} - No return value.
      */
     function add(token) {
-        // console.log("token: " + token);
-        let currentList = getTokens();
+        const currentList = getTokens();
         //* Exclude NaN undefined null 0 false spaces and other
         if(checkToken(token)) {
             if (!contains(token)) {
@@ -46,18 +49,24 @@ export default function ClassList($elem) {
     function contains(token) {
         return indexOf(getTokens(), token) > -1
     }
-    function toggle(token) {
+
+    function toggle(token, force) {
         //TODO: add force parameter
         if(checkToken(token)) {
-            if (contains(token)) {
-                remove(token)
-                return false
-            } else {
-                add(token)
-                return true
+            const hasClass = contains(token);
+
+            if (typeof force === 'boolean') {
+                force ? add(token) : remove(token);
+                return force;
             }
+            
+            hasClass ? remove(token) : add(token);
+            return !hasClass;
         }
+
+        return false;
     }
+
     function replace(oldToken, newToken) {
         if (!contains(oldToken)) {
             return false
@@ -91,9 +100,13 @@ export default function ClassList($elem) {
     function checkToken(token) {
         if(!Boolean(token) || typeof token !== 'string' || token.trim() === "" || exclude.includes(token)) {
             throw new TypeError('Invalid token');
-        } else {
-            return true
+        } 
+        
+        if (exclude.includes(token)) {
+            throw new TypeError(`Token cannot be one of: ${exclude.join(', ')}`);
         }
+
+        return true
     }
 
     return {
@@ -102,9 +115,8 @@ export default function ClassList($elem) {
         ,contains
         ,toggle
         ,replace
-        , toString: $toString
-        , length: 0
-        , item
+        ,toString: $toString
+        ,item
     }
 }
 

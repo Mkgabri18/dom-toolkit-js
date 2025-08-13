@@ -37,11 +37,10 @@ export default function DomSelector ($elem) {
         // From element manipulation utils
         const parent = this.parent(element);
 
-        if (!parent) {
-            return;
-        }
+        if (!parent) return false;
 
         parent.removeChild(element);
+        return true;
     }
 
     function create(tag) {
@@ -55,6 +54,9 @@ export default function DomSelector ($elem) {
     }
 
     function insertBefore(element, newElement) {
+        if (!(element instanceof Element) || !(newElement instanceof Element)) {
+            throw new TypeError('Both arguments must be DOM elements');
+        }
         // From element manipulation utils
         let parent = this.parent(element);
         //TODO check if element is NODE
@@ -71,6 +73,10 @@ export default function DomSelector ($elem) {
     }
 
     function insertAfter(element, newElement) {
+        if (!(element instanceof Element) || !(newElement instanceof Element)) {
+            throw new TypeError('Both arguments must be DOM elements');
+        }
+        
         // From element manipulation utils
         let parent = this.parent(element);
         //TODO check if element is NODE
