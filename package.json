@@ -20,7 +20,7 @@
     "events",
     "browser"
   ],
-  "author": "",
+  "author": "Gabriel Carrasco",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.24.0",
@@ -31,5 +31,9 @@
     "terser-webpack-plugin": "^5.3.10",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mkgabri18/dom-toolkit-js.git"
   }
 }

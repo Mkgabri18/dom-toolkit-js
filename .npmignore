@@ -1,0 +1,15 @@
+src/
+tests/
+docs/
+.github/
+.vscode/
+.git/
+.gitignore
+.npmrc
+.babelrc
+webpack.config.js
+jest.config.js
+*.test.js
+*.spec.js
+coverage/
+node_modules/

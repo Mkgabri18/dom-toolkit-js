@@ -9,15 +9,18 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: isProduction ? 'index.min.js' : 'index.js',
-      library: 'DOMToolkit',
-      libraryTarget: 'umd',
+      library: {
+        name: 'DOMToolkit',
+        type: 'umd',
+        export: 'default',
+      },
       globalObject: 'this',
       clean: true,
     },
     module: {
       rules: [
         {
-          test: /\.(js|ts)$/,
+          test: /\.(js)$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
@@ -48,7 +51,7 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.js'],
       alias: {
         '@': path.resolve(__dirname, 'src'),
       }
