@@ -1,5 +1,5 @@
 
- export function methodToPrototype(eventName) {
+function methodToPrototype(eventName) {
     const methodName = `on${eventName.charAt(0).toUpperCase() + eventName.slice(1)}`; // Es: 'click' -> 'onClick'
 
     
@@ -8,7 +8,10 @@
           if (typeof callback !== 'function') {
             throw new Error("The callback parameter must be a function.");   }
       
-          this.addEventListener(eventName, callback);
+          this.addEventListener(eventName, (event) => {
+            const targetElement = event.srcElement || event.target;
+            callback(event, targetElement)
+          });
         },
         writable: true,
         configurable: true,
@@ -16,14 +19,12 @@
     });
 }
 
-methodToPrototype('click');
-methodToPrototype('dblclick');
-methodToPrototype('mousedown');
-methodToPrototype('mouseup');
-methodToPrototype('mouseenter');
-methodToPrototype('mouseleave');
-methodToPrototype('mouseout');
-methodToPrototype('mouseover');
-methodToPrototype('wheel');
-
-// export { onClick,onDblClick,onMouseDown, onMouseUp, onEnter, onLeave, onHover, onOut, onWheel}
+export function mouseEvent() {
+    const events = [
+        'click', 'dblclick', 'mousedown', 'mouseup',
+        'mouseenter', 'mouseleave', 'mouseout', 'mouseover',
+        'wheel'
+    ];
+    
+    events.forEach(event => methodToPrototype(event));
+};

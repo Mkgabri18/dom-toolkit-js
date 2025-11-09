@@ -1,13 +1,13 @@
-import indexOf from "./indexOf.js";
 
 /**
  * ClassList is a utility for managing class names of an HTML element.
  *
- * @param {HTMLElement} $elem - The HTML element to manage class names for.
+ * @param {HTMLElement} element - The HTML element to manage class names for.
  * @returns {Object} - An object with methods for managing class names.
  */
-export default function ClassList($elem) {
-    let elem = $elem;
+
+export default function ClassList(element) {
+    let target = element;
 
     const exclude = ['undefined', 'null', '0', 'false']
 
@@ -17,10 +17,9 @@ export default function ClassList($elem) {
      * @return {void} - No return value.
      */
     function add(token) {
-        // console.log("token: " + token);
         let currentList = getTokens();
         //* Exclude NaN undefined null 0 false spaces and other
-        if(checkToken(token)) {
+        if(_isValidToken(token)) {
             if (!contains(token)) {
                 //* multiple tokens available
                 let list = currentList.concat(token.split(" "));
@@ -29,11 +28,12 @@ export default function ClassList($elem) {
         }
         return this
     }
+
     function remove(token) {
         let tokens = token.split(' ');
         tokens.forEach(subToken => {
             let currentList = getTokens()
-            if(checkToken(subToken)) {
+            if(_isValidToken(subToken)) {
                 let index = indexOf(currentList, subToken)
                 if (index > -1) {
                     currentList.splice(index, 1)
@@ -46,55 +46,65 @@ export default function ClassList($elem) {
     function contains(token) {
         return indexOf(getTokens(), token) > -1
     }
-    function toggle(token) {
+    function toggle(token, force) {
         //TODO: add force parameter
-        if(checkToken(token)) {
-            if (contains(token)) {
-                remove(token)
-                return false
-            } else {
-                add(token)
-                return true
+        if(_isValidToken(token)) {
+            const hasClass = contains(token);
+
+            if (typeof force === 'boolean') {
+                force ? add(token) : remove(token);
+                return force;
             }
+
+            hasClass ? remove(token) : add(token);
+            return !hasClass
         }
     }
     function replace(oldToken, newToken) {
         if (!contains(oldToken)) {
             return false
         }
-        if(checkToken(oldToken)) {
+        if(_isValidToken(oldToken)) {
             remove(oldToken)
             add(newToken)
         }
     }
     function $toString() {
-        return elem.className
+        return target.className
     }
     function item(index) {
-        return elem.classList.item(index)
+        return target.classList.item(index)
     }
     function getTokens() {
-        if(elem.className.trim().length === 0) {
+        if(target.className.trim().length === 0) {
             return []
         }
-        return elem.className.split(" ").filter(Boolean);
+        return target.className.split(" ").filter(Boolean);
     }
     function setTokens(list) {
         if (!Array.isArray(list)) {
             throw new TypeError('Expected an array of class names');
         }
         if(list) {
-            elem.className = '';
-            elem.classList.add(...list);
+            target.className = '';
+            target.classList.add(...list);
         }
     }
-    function checkToken(token) {
+    function _isValidToken(token) {
         if(!Boolean(token) || typeof token !== 'string' || token.trim() === "" || exclude.includes(token)) {
             throw new TypeError('Invalid token');
         } else {
             return true
         }
     }
+    function indexOf(list, token) {
+        if (!Array.isArray(list)) {
+            throw new TypeError('First argument must be an array');
+        }
+        return list.indexOf(token);
+    }
+
+
 
     return {
         add
@@ -107,4 +117,3 @@ export default function ClassList($elem) {
         , item
     }
 }
-

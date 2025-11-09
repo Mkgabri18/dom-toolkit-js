@@ -5,7 +5,6 @@ const ValidationString = {
         if (typeof key !== "string" || key.trim() === "") {
             throw new Error("The key must be a non-empty string.");
         }
-        console.log("Validation passed for key:", key);
     }
 }
 

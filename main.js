@@ -1,24 +1,23 @@
-import { Selectors } from './index.js';
-import { local, session } from './index.js';
+import DOMToolkit from './src/index.js';
+const { Selectors, local, session } = DOMToolkit;
 
-const { selectId, inHtml } = new Selectors()
+const { selectId, selectAll,  inHtml } = new Selectors()
 
-// onEvent($button, 'click', changecolor);
 selectId('addColor').onClick(addChangecolor);
 selectId('toggleColor').onClick(toggleChangecolor);
 selectId('removeColor').onClick(removeChangecolor);
 selectId('replacecolor').onClick(replacecolor);
 
-// console.log("not found elem. ", selectId(''))
-// selectId('addColors')?.onClick(addChangecolor);
-
-selectId('insertT')
-    .inHtml('Hello World!')
-    .addClass('color-red')
-// console.log("htm", htm)
+selectAll('button')
+    .addClass('focused')
+    .css({ 
+        cursor: 'pointer', 
+    })
 
 function addChangecolor() {
-    selectId('description').addClass('color-red font-xl');
+    selectId('description')
+        .if(window.innerWidth > 768, (t) => t.addClass('color-red font-xl'))
+        .else((t) => t.addClass('color-green font-xl'))
 }
 
 function toggleChangecolor() {
