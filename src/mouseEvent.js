@@ -1,5 +1,5 @@
 
- export function methodToPrototype(eventName) {
+function methodToPrototype(eventName) {
     const methodName = `on${eventName.charAt(0).toUpperCase() + eventName.slice(1)}`; // Es: 'click' -> 'onClick'
 
     

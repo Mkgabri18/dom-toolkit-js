@@ -1,5 +1,4 @@
-import ClassList from './classList.js';
-import DomSelector from './domSelector.js';
+import {DomSelector} from './useDom/DomSelector.js';
 import ValidationString from './Validators/ValidationString.js';
 
 /**
@@ -14,47 +13,63 @@ import ValidationString from './Validators/ValidationString.js';
 */
 export default class Selectors {
 
-    static document = () => {
-        return window.document;
-    };
-    
-    static getClass(elDOM) {
-        if(!elDOM) {
-            throw new Error('Invalid Element');
-        }
-        return new ClassList(elDOM);
-    }
+    static document = () => window.document;
+    static parent = null;
 
     /**
-     * This method takes a DOM element, wraps it with a `ClassList` instance,
-     * and dynamically binds all methods of the `ClassList` instance to the DOM element.
-     * Each method is attached with a suffix `Class` to the DOM element.
-     * @param {HTMLElement} elDom - The DOM element to which class management methods will be attached.
+     * Attach all methods from DomSelector in a native element
+     * The element become "enhanced" with utility DOM
+     * @param {HTMLElement} elDom - DOM element to improve
+     * @returns {HTMLElement} element improved
      */
-    static attachClassManager(elDom) {
-        const elem = new ClassList(elDom);
-        Object.getOwnPropertyNames(elem)
-            .filter(method => typeof elem[method] === 'function')
-            .forEach(method => {
-                elDom[method + 'Class'] = elem[method].bind(elem);
+    static attachDomSelector(elDom) {
+        if (!elDom || elDom.nodeType !== 1) {
+            console.warn('attachDomSelector: elemento non valido', elDom);
+            return elDom;
+        }
+
+        // Avoid reattach enhanced
+        if (elDom._domEnhanced) {
+            return elDom;
+        }
+        
+        try {
+            const element = new DomSelector(elDom);
+
+            // Sign enhanced
+            Object.defineProperty(elDom, '_domEnhanced', {
+                value: true,
+                writable: false,
+                configurable: false,
+                enumerable: false
             });
 
+            Object.entries(element).forEach(([key, method]) => {
+                if (typeof method === 'function') {
+                    Object.defineProperty(elDom, key, {
+                        value: method.bind(element),
+                        writable: true,
+                        configurable: true,
+                        enumerable: false
+                    });
+                }
+            });
+
+            return elDom;
+        } catch (error) {
+            console.log("Error in attachDomSelector", error);
+            return elDom;
+        }
     };
 
-    static attachDomSelector(elDom) {
-        const elem = new DomSelector(elDom);
-
-        Object.entries(elem).forEach(([key, method]) => {
-            if (typeof method === 'function') {
-                Object.defineProperty(elDom, key, {
-                    value: method.bind(elem),
-                    writable: true,
-                    configurable: true,
-                    enumerable: false
-                });
-            }
-        });
-    };
+    /**
+     * Attach DomSelector collection
+     * @param {Array|NodeList|HTMLCollection} elements - Element collection
+     * @returns {Array} Array element improved
+     */
+    static attachToCollection(elements) {
+        return Array.from(elements).map(el => Selectors.attachDomSelector(el));
+    }
 
     constructor() {
         Selectors.parent = Selectors.document();
@@ -64,47 +79,56 @@ export default class Selectors {
         // Validate Selector
         ValidationString.sanitizeSelector(selector);
 
-        return Selectors.parent.querySelector(selector);
-    }
-
-    selectAll(selector) {
-        // Validate Selector
-        ValidationString.sanitizeSelector(selector);
-
-        return Array.from(Selectors.parent.querySelectorAll(selector))
+        const element = Selectors.parent.querySelector(selector);
+        return element ? Selectors.attachDomSelector(element) : null;
     }
 
     selectId(selector) {
         // Validate Selector
         ValidationString.sanitizeSelector(selector);
 
-        if (selector.startsWith('#')) {
-            selector = selector.slice(1);
-        }
+        const id = selector.startsWith('#') ? selector.slice(1) : selector;
 
-        const targetElement = Selectors.parent.getElementById(selector);
+        const targetElement = Selectors.parent.getElementById(id);
         if (!targetElement) {
-            console.error(`Element with ID "${selector}" not found.`);
+            console.error(`Element with ID "${id}" not found.`);
             return null;
         }
         
-        Selectors.attachClassManager(targetElement);
-        Selectors.attachDomSelector(targetElement);
-        return targetElement;
+        return Selectors.attachDomSelector(targetElement);
+    }
+
+    selectAll(selector) {
+        // Validate Selector
+        ValidationString.sanitizeSelector(selector);
+        try {
+            const collection = DomSelector.all(selector)
+            if (!collection) {
+                console.error(`Element with selector "${selector}" not found.`);
+                return null;
+            }
+
+            return collection
+        } catch (error) {
+            console.error(`Errore in selectAll per "${selector}":`, error);
+            return new DomCollection([]);
+        }
     }
 
     selectClasses(selector) {
         // Validate Selector
         ValidationString.sanitizeSelector(selector);
 
-        if (selector.startsWith('.')) {
-            selector = selector.slice(1);
-        }
+        const className = selector.startsWith('.') ? selector.slice(1) : selector;
 
         try {
-            const elements = Array.from(Selectors.parent.getElementsByClassName(selector));
-            elements.forEach(Selectors.attachClassManager);
-            return elements;
+            // const elements = Array.from(Selectors.parent.getElementsByClassName(selector));
+            // elements.forEach(Selectors.attachDomSelector);
+            const elements = DomSelector.all(className);
+            if (elements.length === 0) {
+                console.warn(`Not found element with class "${className}".`);
+            }
+            return Selectors.attachToCollection(elements);
         } catch (error) {
             console.error(error);
             return [];
@@ -115,10 +139,23 @@ export default class Selectors {
         // Validate Selector
         ValidationString.sanitizeSelector(selector);
 
-        return Selectors.parent.getElementsByTagName(selector);
+        try {
+            const elements = Array.from(Selectors.parent.getElementsByTagName(tagName));
+            
+            if (elements.length === 0) {
+                console.warn(`Not found element with tag "${tagName}".`);
+            }
+
+            return Selectors.attachToCollection(elements);
+        } catch (error) {
+            console.error(`Errore in selectTag for "${tagName}":`, error);
+            return [];
+        }
+
+        // return Selectors.parent.getElementsByTagName(selector);
     }
 
 }
 
 // Mixin methods from DomSelector
-Object.assign(Selectors.prototype, DomSelector);
+// Object.assign(Selectors.prototype, new DomSelector());
