@@ -122,8 +122,6 @@ export default class Selectors {
         const className = selector.startsWith('.') ? selector.slice(1) : selector;
 
         try {
-            // const elements = Array.from(Selectors.parent.getElementsByClassName(selector));
-            // elements.forEach(Selectors.attachDomSelector);
             const elements = DomSelector.all(className);
             if (elements.length === 0) {
                 console.warn(`Not found element with class "${className}".`);
